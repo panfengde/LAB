@@ -1,0 +1,39 @@
+(define-syntax cond
+    (syntax-rules ()
+        ((_ ( e1 ...))
+        (if e1 (begin ...)))
+        ((_ (e1 ...1) c1 ...2)
+        (if e1
+            (begin ...1)
+            (cond c1 ...2)))))
+
+(define-syntax let
+    (syntax-rules ()
+        (
+            (_ ((arg1 rag1Value) ) body )  
+                    ( (lambda ( arg1 ) body) rag1Value ) 
+        )
+        (
+            (_ ( (arg1 rag1Value) ... ) body )  
+                    ( (lambda ( arg1 ) (let (...) body ) ) rag1Value )
+        )
+    )
+)
+
+(define (fib n)
+    (cond
+        ((= n 1) 1)
+        (else (+ n (fib (- n 1)) ))
+    )
+)
+
+(define (result n)
+    (cond
+        ((= n 1) 1)
+        (else (+ n (result (- n 1)) ))
+    )
+)
+
+(fib 10)
+
+

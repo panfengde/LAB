@@ -1,0 +1,46 @@
+{
+    name: "body",
+    component: "div-f",
+    style_f: {padding: "12px 6px", border: "1px solid #ccc"},
+    child: [
+        {
+            name: "确认按钮",
+            component: "button-f",
+            props: {
+                type_f: "submit",
+            },
+            style_f: {},
+            child: [
+                {
+                    name: "文本",
+                    component: "txt-f",
+                    props: {},
+                    style_f: {},
+                    child: [
+                        {
+                            name: "文字",
+                            component: "txt",
+                            content: "xxxxxxxx",
+                        },
+                    ],
+                },
+                {
+                    name: "文本",
+                    component: "txt-f",
+                    props: {},
+                    style_f: {},
+                    child: [
+                        {
+                            name: "文字",
+                            component: "txt",
+                            content: "ooooooo",
+                        },
+                    ],
+                },
+            ],
+        }
+    ]
+}
+
+
+
