@@ -13,14 +13,14 @@ struct Task
   int waiteTime;
   clock_t doTimer;
   LabCallback body;
-  shared_ptr<Frame> env;
+  Frame *env;
 };
 
 class TaskList
 {
 public:
   vector<Task> taskList;
-  void insertTask(LabCallback, shared_ptr<Frame>, int);
+  void insertTask(LabCallback, Frame *, int);
   vector<Task> getTask();
   void deleteTask();
   void loopTask();

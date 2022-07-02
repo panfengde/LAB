@@ -5,18 +5,29 @@
 #include <string>
 #include <memory>
 #include <functional>
+
 using namespace std;
 
 class LabEle;
+
 class Frame;
-typedef shared_ptr<LabEle> Lab_Ptr;
+
+class Lab_undefined;
+
+class CodeUnit;
+
+//typedef shared_ptr<Lab_undefined> shared_undefined;
+
+typedef LabEle *Lab_Ptr;
+
+typedef shared_ptr<CodeUnit> CodeUnit_Ptr;
 
 typedef function<LabEle(vector<LabEle>)> function_define;
 
-typedef function<shared_ptr<LabEle>(shared_ptr<Frame>)> LabCallback;
+typedef function<LabEle *(Frame *)> LabCallback;
 
-typedef function<Lab_Ptr(Lab_Ptr)> macroCallBack;
+typedef function<LabEle *(LabEle *)> macroCallBack;
 
-typedef function<Lab_Ptr(vector<Lab_Ptr> &)> originalFn;
+typedef function<LabEle *(vector<LabEle *> &)> originalFn;
 
 #endif

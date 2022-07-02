@@ -2,30 +2,30 @@
 #define VARIABLE
 
 #include "../LabTypes.h"
-#include "./Base.h"
+#include "./LabEle.h"
 #include <iostream>
 #include <string>
 #include <map>
 
-class Lab_variable
-{
+class Lab_variable : public LabEle {
 private:
     /* data */
 public:
     std::string value;
     LabEle *container;
-    LabTypes::LabTypes type = LabTypes::variable_type;
-    Lab_variable(std::string _value)
-    {
+
+    Lab_variable(std::string _value) {
+        type = LabTypes::variable_type;
         //变量名称检测
         value = _value;
     };
-    void show()
-    {
+
+    void show() {
         std::cout << value << std::endl;
     }
+
     ~Lab_variable();
 };
 
-Lab_variable::~Lab_variable(){};
+Lab_variable::~Lab_variable() {};
 #endif

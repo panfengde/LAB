@@ -3,14 +3,13 @@
 
 #include "../LabTypes.h"
 #include <iostream>
-#include "./Base.h"
+#include "./LabEle.h"
 using namespace std;
 
 class LabEle;
-class Lab_undefined
+class Lab_undefined:public LabEle
 {
 public:
-    LabTypes::LabTypes type = LabTypes::undefined_type;
     bool value = false;
     LabEle *container;
     Lab_undefined(){};

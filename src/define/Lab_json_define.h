@@ -11,19 +11,21 @@
 #include "../parseCode/codeStruct.h"
 #include "../utils/tools.h"
 
-Lab_json::Lab_json(vector<Lab_Ptr> consLists)
+Lab_json::Lab_json(vector<LabEle *> consLists)
 {
-    for (Lab_Ptr oneCons : consLists)
+    type = LabTypes::json_type;
+    for (LabEle *oneCons : consLists)
     {
-        string key = oneCons->consV->key_value.first->value();
+        auto consV = (Lab_cons *)(oneCons);
+        string key = consV->key_value.first->value;
 
-        key_value.insert(std::pair<std::string, Lab_Ptr>(key, oneCons->consV->key_value.second));
+        key_value.insert(std::pair<std::string, LabEle *>(key, consV->key_value.second));
     };
 };
 
-Lab_Ptr &Lab_json::get(LabEle var)
+LabEle *Lab_json::get(LabEle *var)
 {
-    string key = var.value();
+    string key = var->value;
     auto theFind = key_value.find(key);
     if (theFind != key_value.end())
     {
@@ -34,7 +36,7 @@ Lab_Ptr &Lab_json::get(LabEle var)
     {
         //这里应该只需要一个undefined
         std::cout << "没有找到变量" << key << std::endl;
-        auto result = make_shared<LabEle>();
+        auto result = new LabEle();
         return result;
     }
 };
@@ -46,12 +48,12 @@ Lab_json::~Lab_json()
 std::string Lab_json::value()
 {
 
-    map<string, Lab_Ptr>::iterator iter;
+    map<string, LabEle *>::iterator iter;
     string jsonString = "{";
     for (iter = key_value.begin(); iter != key_value.end(); iter++)
     {
         //cout << iter->first << "-" << iter->second->value() << endl;
-        jsonString += iter->first + ":" + iter->second->value() + ",";
+        jsonString += iter->first + ":" + iter->second->value + ",";
     }
     jsonString += "}";
     return jsonString;
@@ -59,8 +61,8 @@ std::string Lab_json::value()
 
 std::string Lab_json::stringify()
 {
-    map<string, Lab_Ptr>::iterator iter;
-    map<string, Lab_Ptr>::iterator iter2;
+    map<string, LabEle *>::iterator iter;
+    map<string, LabEle *>::iterator iter2;
     string jsonString = "{";
     auto begin = key_value.begin();
     auto end = key_value.end();

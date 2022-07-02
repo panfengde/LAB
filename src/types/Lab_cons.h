@@ -11,27 +11,26 @@
 #include <string>
 #include <functional>
 #include <utility>
-#include "./Base.h"
+#include "./LabEle.h"
 
 using namespace std;
 
 class LabEle;
 
-class Lab_cons : public Base
+class Lab_cons :  public LabEle
 {
 private:
 public:
-  LabTypes::LabTypes type = LabTypes::cons_type;
   LabEle *container;
-  pair<Lab_Ptr, Lab_Ptr> key_value;
+  pair<LabEle *, LabEle *> key_value;
   Lab_cons();
   ~Lab_cons();
-  Lab_cons(Lab_Ptr key, Lab_Ptr value);
-  Lab_Ptr car()
+  Lab_cons(LabEle * key, LabEle * value);
+  LabEle * car()
   {
     return key_value.first;
   };
-  Lab_Ptr cdr()
+  LabEle * cdr()
   {
     return key_value.second;
   };

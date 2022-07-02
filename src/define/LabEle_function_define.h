@@ -12,18 +12,21 @@
 #include "../types/Lab_function.h"
 //typedef std::function<LabEle(std::vector<LabEle>)> function_define;
 
-Lab_function::Lab_function(){
-
+Lab_function::Lab_function()
+{
+    type = LabTypes::function_type;
 };
 
 Lab_function::Lab_function(originalFn callBack)
 {
+    type = LabTypes::function_type;
     funType = funType::original;
     original_fn = callBack;
 };
 
-Lab_function::Lab_function(vector<shared_ptr<LabEle>> define_args, LabCallback define_body, shared_ptr<Frame> env)
+Lab_function::Lab_function(vector<LabEle *> define_args, LabCallback define_body, Frame *env)
 {
+    type = LabTypes::function_type;
     funType = funType::compound;
     args = define_args;
     ananlyzed_body = define_body;
@@ -33,6 +36,7 @@ Lab_function::Lab_function(vector<shared_ptr<LabEle>> define_args, LabCallback d
 
 Lab_function::Lab_function(macroCallBack callback)
 {
+    type = LabTypes::function_type;
     funType = funType::macro;
     macroCallBackBody = callback;
 };

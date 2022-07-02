@@ -6,6 +6,7 @@
 #include <string>
 #include "../LabTypes.h"
 #include "../types/LabEle.h"
+#include "../types/LabEleTool.h"
 #include "../types/Lab_list.h"
 #include "../parseCode/codeStruct.h"
 #include "../utils/tools.h"
@@ -13,50 +14,54 @@
 //#include "./Lab_cons.h"
 
 using namespace std;
+
 //class Lab_list : pubick Lab_cons
 class LabEle;
 
-Lab_list::Lab_list(){
-
+Lab_list::Lab_list()
+{
+    type = LabTypes::list_type;
 };
 
 Lab_list::Lab_list(vector<shared_ptr<CodeUnit>> CodeVec)
 {
+    type = LabTypes::list_type;
     //vector<LabEle> *_eles = new vector<LabEle>{};
-    eles = vector<shared_ptr<LabEle>>();
+    eles = vector<LabEle *>();
     ///cout << CodeVec.size() << endl;
     for (shared_ptr<CodeUnit> temp : CodeVec)
     {
-        eles.push_back(make_shared<LabEle>(*temp));
+        eles.push_back(LabEleTool::createLabEle(temp));
     };
 };
 
-Lab_list::Lab_list(vector<shared_ptr<LabEle>> LabEles)
+Lab_list::Lab_list(vector<LabEle *> LabEles)
 {
+    type = LabTypes::list_type;
     eles = LabEles;
 };
 
-Lab_Ptr Lab_list::car()
+LabEle *Lab_list::car()
 {
     //return eles[0];
+    cout << "------" << endl;
     return eles.front();
 };
 
-Lab_Ptr Lab_list::cdr()
+LabEle *Lab_list::cdr()
 {
     auto length = eles.size();
 
     if (length < 2)
     {
-        return make_shared<LabEle>();
+        return new LabEle();
     }
     else
     {
-        vector<shared_ptr<LabEle>>::const_iterator first = eles.begin() + 1;
-        vector<shared_ptr<LabEle>>::const_iterator end = eles.end();
-        vector<shared_ptr<LabEle>> _cdr(first, end);
-
-        auto result = make_shared<LabEle>(_cdr);
+        vector<LabEle *>::const_iterator first = eles.begin() + 1;
+        vector<LabEle *>::const_iterator end = eles.end();
+        vector<LabEle *> _cdr(first, end);
+        auto result = LabEleTool::createLabEle(_cdr);
 
         return result;
     };
@@ -67,11 +72,11 @@ int Lab_list::length()
     return eles.size();
 }
 
-Lab_Ptr Lab_list::last_items()
+LabEle *Lab_list::last_items()
 {
     if (eles.size() < 1)
     {
-        return make_shared<LabEle>();
+        return new LabEle();
     }
     // return else[ele.size()-1]
     return eles.back();
@@ -82,11 +87,12 @@ string Lab_list::value()
     string result = "( ";
     for (int i = 0; i < eles.size(); i++)
     {
-        result += eles[i]->value() + ' ';
+        result += eles[i]->value + ' ';
     }
     result += " )";
     return result;
 }
+
 string Lab_list::stringify()
 {
     string result = "[";

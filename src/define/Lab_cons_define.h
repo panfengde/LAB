@@ -10,22 +10,21 @@
 #include "../parseCode/codeStruct.h"
 #include "../utils/tools.h"
 
-Lab_cons::~Lab_cons()
-{
+Lab_cons::~Lab_cons() {
+    type = LabTypes::cons_type;
 }
 
-Lab_cons::Lab_cons(Lab_Ptr key, Lab_Ptr value)
-{
-  key_value.first = key;
-  key_value.second = value;
+Lab_cons::Lab_cons(Lab_Ptr key, Lab_Ptr value) {
+    type = LabTypes::cons_type;
+    key_value.first = key;
+    key_value.second = value;
 };
 
-std::string Lab_cons::value()
-{
-  string result = "( ";
-  result += (key_value.first->value() + " · " + key_value.second->value());
-  result += ")";
-  return result;
+std::string Lab_cons::value() {
+    string result = "( ";
+    result += (key_value.first->value + " · " + key_value.second->value);
+    result += ")";
+    return result;
 }
 
 

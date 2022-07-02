@@ -10,27 +10,26 @@
 #include <vector>
 #include <string>
 #include <functional>
-#include "./Base.h"
+#include "./LabEle.h"
 
 using namespace std;
 
 class LabEle;
 class Lab_cons;
 
-class Lab_json : public Base
+class Lab_json :  public LabEle
 {
 private:
 public:
-  LabTypes::LabTypes type = LabTypes::json_type;
   LabEle *container;
   Lab_json();
   Lab_json(string);
-  Lab_json(vector<Lab_Ptr>);
+  Lab_json(vector<LabEle*>);
   //变量存储的字典；
-  map<std::string, Lab_Ptr> key_value;
+  map<std::string, LabEle*> key_value;
   string stringify();
   std::string value();
-  Lab_Ptr &get(LabEle var);
+  LabEle* get(LabEle* var);
   void show()
   {
     std::cout << value() << std::endl;

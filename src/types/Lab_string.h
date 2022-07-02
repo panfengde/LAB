@@ -3,17 +3,16 @@
 
 #include "../LabTypes.h"
 #include <iostream>
-#include "./Base.h"
+#include "./LabEle.h"
 using namespace std;
 
 class LabEle;
-class Lab_string: public Base
+class Lab_string: public LabEle
 {
 private:
     /* data */
 
 public:
-    LabTypes::LabTypes type = LabTypes::string_type;
     std::string value;
     LabEle *container;
     Lab_string(std::string v);
@@ -31,6 +30,7 @@ public:
 
 Lab_string::Lab_string(std::string v)
 {
+    type = LabTypes::string_type;
     //std::cout << "Lab_string" << std::endl;
     value = v;
 };
