@@ -41,7 +41,7 @@ Frame::~Frame()
 void Frame::insert_key_value(LabEle *var, LabEle *value)
 {
     cout << "insert_key_value" << endl;
-    auto keyEle = dynamic_cast<Lab_string *>(var);
+    auto keyEle = dynamic_cast<Lab_variable *>(var);
     string key = keyEle->value;
     var_value.insert(std::pair<std::string, LabEle *>(key, value));
 }
@@ -60,7 +60,7 @@ void Frame::extend_prototype(Frame *fatherPrototype)
 
 bool Frame::is_key_exist(LabEle *var)
 {
-    auto keyEle = dynamic_cast<Lab_string *>(var);
+    auto keyEle = dynamic_cast<Lab_variable *>(var);
     string key = keyEle->value;
     auto theFind = var_value.find(key);
     if (theFind != var_value.end())
@@ -69,14 +69,14 @@ bool Frame::is_key_exist(LabEle *var)
     }
     else
     {
-        //std::cout << "没有找到变量" << key << std::endl;
+        std::cout << "没有找到变量" << key << std::endl;
         return false;
     }
 };
 
 LabEle *Frame::look_vars_frame(LabEle *var)
 {
-    auto keyEle = dynamic_cast<Lab_string *>(var);
+    auto keyEle = dynamic_cast<Lab_variable *>(var);
     string key = keyEle->value;
     auto theFind = var_value.find(key);
     if (theFind != var_value.end())
@@ -94,7 +94,7 @@ LabEle *Frame::look_vars_frame(LabEle *var)
 
 LabEle *Frame::look_variable_env(LabEle *var)
 {
-    auto keyEle = dynamic_cast<Lab_string *>(var);
+    auto keyEle = dynamic_cast<Lab_variable *>(var);
     string key = keyEle->value;
 
     auto theFind = var_value.find(key);
@@ -118,7 +118,7 @@ LabEle *Frame::look_variable_env(LabEle *var)
 
 void Frame::set_variable_value_env(LabEle *var, LabEle *value)
 {
-    auto keyEle = dynamic_cast<Lab_string *>(var);
+    auto keyEle = dynamic_cast<Lab_variable *>(var);
     string key = keyEle->value;
 
     auto theFind = var_value.find(key);
@@ -141,7 +141,7 @@ void Frame::set_variable_value_env(LabEle *var, LabEle *value)
 
 LabEle *Frame::look_variable_prototype(LabEle *var)
 {
-    auto keyEle = dynamic_cast<Lab_string *>(var);
+    auto keyEle = dynamic_cast<Lab_variable *>(var);
     string key = keyEle->value;
     auto theFind = var_value.find(key);
 

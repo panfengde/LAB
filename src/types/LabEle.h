@@ -43,15 +43,13 @@ class Lab_keyWord;
 //
 class Frame;
 
-bool isNumber(const std::string &str)
-{ //判断字符串是否为数字
+bool isNumber(const std::string &str) { //判断字符串是否为数字
     istringstream sin(str);
     double test;
     return sin >> test && sin.eof();
 }
 
-class LabEle
-{
+class LabEle {
 public:
     LabTypes::LabTypes type = LabTypes::undefined_type;
     std::string value = "undefined";
@@ -79,14 +77,11 @@ public:
 
     Frame *frameV();
 
-    void show(){
+    void show() {
 
     };
 
-    string stringify()
-    {
-        return string("stringify");
-    };
+    string stringify();
 
     // ~LabEle();
 };
