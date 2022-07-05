@@ -11,29 +11,22 @@
 #include "../parseCode/codeStruct.h"
 #include "../utils/tools.h"
 
-Lab_json::Lab_json(vector<LabEle *> consLists)
-{
+Lab_json::Lab_json(vector<LabEle *> consLists) {
     type = LabTypes::json_type;
-    for (LabEle *oneCons : consLists)
-    {
-        auto consV = (Lab_cons *)(oneCons);
-        string key = consV->key_value.first->value;
-
-        key_value.insert(std::pair<std::string, LabEle *>(key, consV->key_value.second));
+    for (LabEle *oneCons: consLists) {
+        string key = oneCons->consV()->key_value.first->stringV()->value;
+        std::cout << "---key---" << key << std::endl;
+        key_value.insert(std::pair<std::string, LabEle *>(key, oneCons->consV()->key_value.second));
     };
 };
 
-LabEle *Lab_json::get(LabEle *var)
-{
+LabEle *Lab_json::get(LabEle *var) {
     string key = var->value;
     auto theFind = key_value.find(key);
-    if (theFind != key_value.end())
-    {
+    if (theFind != key_value.end()) {
 
         return theFind->second;
-    }
-    else
-    {
+    } else {
         //这里应该只需要一个undefined
         std::cout << "没有找到变量" << key << std::endl;
         auto result = new LabEle();
@@ -41,17 +34,14 @@ LabEle *Lab_json::get(LabEle *var)
     }
 };
 
-Lab_json::~Lab_json()
-{
+Lab_json::~Lab_json() {
 }
 
-std::string Lab_json::value()
-{
+std::string Lab_json::value() {
 
     map<string, LabEle *>::iterator iter;
     string jsonString = "{";
-    for (iter = key_value.begin(); iter != key_value.end(); iter++)
-    {
+    for (iter = key_value.begin(); iter != key_value.end(); iter++) {
         //cout << iter->first << "-" << iter->second->value() << endl;
         jsonString += iter->first + ":" + iter->second->value + ",";
     }
@@ -59,25 +49,19 @@ std::string Lab_json::value()
     return jsonString;
 }
 
-std::string Lab_json::stringify()
-{
+std::string Lab_json::stringify() {
     map<string, LabEle *>::iterator iter;
     map<string, LabEle *>::iterator iter2;
     string jsonString = "{";
     auto begin = key_value.begin();
     auto end = key_value.end();
     auto rbegin = key_value.rbegin();
-    for (iter = begin; iter != end; iter++)
-    {
+    for (iter = begin; iter != end; iter++) {
         iter2 = iter;
-        //cout << iter->first << "-" << iter->second->value() << endl;
-        if (++iter2 == end)
-        {
-            jsonString += iter->first + ':' + iter->second->stringify();
-        }
-        else
-        {
-            jsonString += iter->first + ':' + iter->second->stringify() + ",";
+        if (++iter2 == end) {
+            jsonString += "\"" + iter->first + "\"" + ':' + iter->second->stringify();
+        } else {
+            jsonString += "\"" + iter->first + "\"" + ':' + iter->second->stringify() + ",";
         }
     }
     jsonString += '}';

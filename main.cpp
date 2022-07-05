@@ -11,16 +11,22 @@ using namespace std;
 int main() {
     // 插入全局变量，方法等
     init();
-    string strCode = R"(
+    /*string strCode = R"(
         (sleep (+ 1 1) 10)
         (sleep (+ 2 2) 100)
         (sleep (+ 3 3) 1000)
         (sleep (+ 1000 100) 5000)
         (sleep (+ 4 4) 20)
-     )";
-    //    string strCode = R"(
-    //         (+ 1 1)
-    //     )";
+     )";*/
+    string strCode = R"(
+            {
+    a:{
+        x:"hello",
+        y:"hello",
+    },
+    b:"hello",
+}
+         )";
     //string strCode = read("./Lab/test.lab");
     //string strCode = read("./Lab/town.json");
     //strCode = "( begin " + strCode + " )";

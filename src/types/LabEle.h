@@ -22,13 +22,19 @@
 using namespace std;
 
 //
+class Lab_undefined;
+
 class Lab_number;
 
 class Lab_boolean;
 
 class Lab_string;
 
+class Lab_cons;
+
 class Lab_list;
+
+class Lab_json;
 
 class Lab_variable;
 
@@ -59,13 +65,19 @@ public:
 
     virtual LabEle *get(LabEle *attr);
 
+    Lab_undefined *undefinedV();
+
     Lab_number *numberV();
 
     Lab_boolean *booleanV();
 
     Lab_string *stringV();
 
+    Lab_cons *consV();
+
     Lab_list *listV();
+
+    Lab_json *jsonV();
 
     Lab_class *classV();
 
@@ -81,7 +93,9 @@ public:
 
     };
 
-    string stringify();
+    virtual string stringify();
+
+    LabEle *set(LabEle *);
 
     // ~LabEle();
 };

@@ -318,11 +318,8 @@ namespace analyze {
     }
 
     LabCallback _string(LabEle &ele) {
-        return [ele](Frame *env) mutable -> LabEle * {
-            auto new_string = LabEleTool::createLabEle();
-            //没有深度拷贝
-            *new_string = ele;
-            //new_string->clone(ele);
+        return [&ele](Frame *env) mutable -> LabEle * {
+            auto new_string = LabEleTool::createLabEleString(ele.stringV()->value);
             return new_string;
         };
     }
@@ -330,8 +327,7 @@ namespace analyze {
     LabCallback boolean(LabEle &ele) {
         return [&ele](Frame *env) -> LabEle * {
             //没有深度拷贝
-            auto new_string = LabEleTool::createLabEle();
-            *new_string = ele;
+            auto new_string = LabEleTool::createLabEle(ele.booleanV()->value);
             return new_string;
         };
     }
@@ -479,16 +475,14 @@ namespace analyze {
     LabCallback set(LabEle &ele) {
         LabEle *setInfo = ele.listV()->cdr();
         LabEle *name = setInfo->listV()->car();
-
         LabEle *value = setInfo->listV()->cdr()->listV()->car();
         LabCallback nameCallback = explainObj_entry(*name);
         LabCallback valueCallback = explainObj_entry(*value);
         // cout << "go-set" << name.variableV()->value << endl;
         return [=](Frame *env) mutable -> LabEle * {
             LabEle *trueObj = nameCallback(env);
-            LabEle *truevalue = valueCallback(env);
-
-            // trueObj->bindQuote(truevalue);
+            LabEle *trueValue = valueCallback(env);
+            trueObj->set(trueValue);
             return trueObj;
             //return truevalue;
         };
@@ -685,7 +679,7 @@ namespace analyze {
     LabCallback app(LabEle &ele) {
         if (ele.listV()->eles.size() > 1) {
             LabEle *temp = ele.listV()->car();
-            if (global_env->father_frame->is_key_exist(temp)) {
+            if (temp->type == LabTypes::variable_type && global_env->father_frame->is_key_exist(temp)) {
                 LabEle *true_macro = global_env->father_frame->look_vars_frame(temp);
                 LabEle *macro_operands = ele.listV()->cdr();
                 //宏的逻辑

@@ -24,7 +24,13 @@ public:
         std::cout << value << std::endl;
     }
 
+    string stringify();
+
     ~Lab_variable();
+};
+
+string Lab_variable::stringify() {
+    return string("var");
 };
 
 Lab_variable::~Lab_variable() {};

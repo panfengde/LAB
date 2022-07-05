@@ -18,46 +18,37 @@ using namespace std;
 //class Lab_list : pubick Lab_cons
 class LabEle;
 
-Lab_list::Lab_list()
-{
+Lab_list::Lab_list() {
     type = LabTypes::list_type;
 };
 
-Lab_list::Lab_list(vector<shared_ptr<CodeUnit>> CodeVec)
-{
+Lab_list::Lab_list(vector<shared_ptr<CodeUnit>> CodeVec) {
     type = LabTypes::list_type;
     //vector<LabEle> *_eles = new vector<LabEle>{};
     eles = vector<LabEle *>();
     ///cout << CodeVec.size() << endl;
-    for (shared_ptr<CodeUnit> temp : CodeVec)
-    {
+    for (shared_ptr<CodeUnit> temp: CodeVec) {
         eles.push_back(LabEleTool::createLabEle(temp));
     };
 };
 
-Lab_list::Lab_list(vector<LabEle *> LabEles)
-{
+Lab_list::Lab_list(vector<LabEle *> LabEles) {
     type = LabTypes::list_type;
     eles = LabEles;
 };
 
-LabEle *Lab_list::car()
-{
+LabEle *Lab_list::car() {
     //return eles[0];
     cout << "------" << endl;
     return eles.front();
 };
 
-LabEle *Lab_list::cdr()
-{
+LabEle *Lab_list::cdr() {
     auto length = eles.size();
 
-    if (length < 2)
-    {
+    if (length < 2) {
         return new LabEle();
-    }
-    else
-    {
+    } else {
         vector<LabEle *>::const_iterator first = eles.begin() + 1;
         vector<LabEle *>::const_iterator end = eles.end();
         vector<LabEle *> _cdr(first, end);
@@ -67,53 +58,42 @@ LabEle *Lab_list::cdr()
     };
 };
 
-int Lab_list::length()
-{
+int Lab_list::length() {
     return eles.size();
 }
 
-LabEle *Lab_list::last_items()
-{
-    if (eles.size() < 1)
-    {
+LabEle *Lab_list::last_items() {
+    if (eles.size() < 1) {
         return new LabEle();
     }
     // return else[ele.size()-1]
     return eles.back();
 };
 
-string Lab_list::value()
-{
+string Lab_list::value() {
     string result = "( ";
-    for (int i = 0; i < eles.size(); i++)
-    {
+    for (int i = 0; i < eles.size(); i++) {
         result += eles[i]->value + ' ';
     }
     result += " )";
     return result;
 }
 
-string Lab_list::stringify()
-{
+string Lab_list::stringify() {
     string result = "[";
     auto size = eles.size();
-    for (int i = 0; i < size; i++)
-    {
-        if (i == size - 1)
-        {
+    for (int i = 0; i < size; i++) {
+        if (i == size - 1) {
             result += eles[i]->stringify();
-        }
-        else
-        {
+        } else {
             result += eles[i]->stringify() + ',';
         }
     }
-    result += " ]";
+    result += ']';
     return result;
 }
 
-void Lab_list::show()
-{
+void Lab_list::show() {
     cout << value() << endl;
 };
 

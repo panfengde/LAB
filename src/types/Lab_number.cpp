@@ -7,25 +7,27 @@
 
 using namespace std;
 
-LabEle *Lab_number::get(LabEle *attr)
-{
+LabEle *Lab_number::get(LabEle *attr) {
     //std::cout << "number--" << v << std::endl;
     return property->look_variable_env(attr);
 };
 
-Lab_number::Lab_number(std::string v)
-{
+Lab_number::Lab_number(std::string v) {
     type = LabTypes::number_type;
     //std::cout << "number--" << v << std::endl;
     value = std::stoi(v);
 };
 
-Lab_number::Lab_number(long v)
-{
+Lab_number::Lab_number(long v) {
     type = LabTypes::number_type;
     value = v;
 };
 
-Lab_number::~Lab_number(){
+string Lab_number::stringify() {
+    return to_string(value);
+};
+
+
+Lab_number::~Lab_number() {
     //std::cout << "~Lab_number" << std::endl;
 };

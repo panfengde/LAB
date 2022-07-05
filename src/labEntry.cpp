@@ -42,6 +42,7 @@ Lab_Ptr labEntry(string strCode) {
     startTime = clock(); //计时开始
 
     shared_ptr<CodeUnit> oneExp = codeTxt_to_list(strCode);
+    oneExp->show();
     auto go = LabEleTool::createLabEle(oneExp);
 
     // go->show();
@@ -54,7 +55,7 @@ Lab_Ptr labEntry(string strCode) {
     std::cout << "开始分析" << std::endl;
     LabCallback call_go = explainObj_entry(*go);
     std::cout << "开始执行" << std::endl;
-    LabEle * result = call_go(global_env);
+    LabEle *result = call_go(global_env);
     std::cout << "执行结果：" << std::endl;
     std::cout << result->stringify() << endl;
     endTime2 = clock(); //计时开始

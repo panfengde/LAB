@@ -17,28 +17,31 @@ using namespace std;
 
 class LabEle;
 
-class Lab_cons :  public LabEle
-{
+class Lab_cons : public LabEle {
 private:
 public:
-  LabEle *container;
-  pair<LabEle *, LabEle *> key_value;
-  Lab_cons();
-  ~Lab_cons();
-  Lab_cons(LabEle * key, LabEle * value);
-  LabEle * car()
-  {
-    return key_value.first;
-  };
-  LabEle * cdr()
-  {
-    return key_value.second;
-  };
-  std::string value();
-  void show()
-  {
-    std::cout << value() << std::endl;
-  }
+    LabEle *container;
+    pair<LabEle *, LabEle *> key_value;
+
+    Lab_cons();
+
+    ~Lab_cons();
+
+    Lab_cons(LabEle *key, LabEle *value);
+
+    LabEle *car() {
+        return key_value.first;
+    };
+
+    LabEle *cdr() {
+        return key_value.second;
+    };
+
+    string stringify();
+
+    void show() {
+        std::cout << stringify() << std::endl;
+    }
 };
 
 #endif

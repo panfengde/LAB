@@ -14,15 +14,15 @@ Lab_cons::~Lab_cons() {
     type = LabTypes::cons_type;
 }
 
-Lab_cons::Lab_cons(Lab_Ptr key, Lab_Ptr value) {
+Lab_cons::Lab_cons(LabEle * key, LabEle * value) {
     type = LabTypes::cons_type;
     key_value.first = key;
     key_value.second = value;
 };
 
-std::string Lab_cons::value() {
+std::string Lab_cons::stringify() {
     string result = "( ";
-    result += (key_value.first->value + " · " + key_value.second->value);
+    result += (key_value.first->stringify() + " · " + key_value.second->stringify());
     result += ")";
     return result;
 }
