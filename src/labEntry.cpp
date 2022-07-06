@@ -22,7 +22,7 @@
 #include "./analyze/index.cpp"
 #include "./frame/frame.h"
 #include "./frame/frame.cpp"
-#include "./readfile/read.cpp"
+#include "./readfile/read.h"
 #include "./types/Lab_number.cpp"
 #include "./global_vars/global_vars.cpp"
 #include "./task/task.cpp"
@@ -34,19 +34,20 @@ using namespace std;
 //typedef std::function<LabEle(Frame&)> LabCallback;
 Lab_Ptr labEntry(string strCode) {
 
-    //string strCode = read("./Lab/test.lab");
+    strCode = read("/Users/panfeng/coder/myProject/Lab/src/Lab/class.lab");
+    // strCode = read("/Users/panfeng/coder/myProject/Lab/src/Lab/town.json");
     //string strCode = read("./Lab/town.json");
     //strCode = "( begin " + strCode + " )";
-
     clock_t startTime, endTime;
     startTime = clock(); //计时开始
 
     shared_ptr<CodeUnit> oneExp = codeTxt_to_list(strCode);
-    oneExp->show();
+    // oneExp->show();
     auto go = LabEleTool::createLabEle(oneExp);
 
     // go->show();
     endTime = clock(); //计时结束
+
     std::cout << "解析字符串时间: " << (double) (endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
 
     clock_t startTime2, endTime2;

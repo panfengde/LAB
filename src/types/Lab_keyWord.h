@@ -26,7 +26,14 @@ public:
         std::cout << "key_str" << std::endl;
     }
 
+    string stringify();
+
     ~Lab_keyWord() {};
+};
+
+
+string Lab_keyWord::stringify() {
+    return string(value);
 };
 
 #endif

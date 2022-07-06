@@ -1,0 +1,12 @@
+(begin
+    (class animal
+        (constructor (color_1  wheel_1)
+            (set (get this "color") color_1)
+            (set (get this "wheel") wheel_1)
+        )
+        (define (a x) (+ x 100))
+        (define (b x) (+ x 100))
+    )
+
+    (define one (new animal "aaa" 11111))
+)

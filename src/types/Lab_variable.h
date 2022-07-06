@@ -30,7 +30,7 @@ public:
 };
 
 string Lab_variable::stringify() {
-    return string("var");
+    return string(value);
 };
 
 Lab_variable::~Lab_variable() {};

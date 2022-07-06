@@ -31,7 +31,6 @@ Frame::~Frame() {
 }
 
 void Frame::insert_key_value(LabEle *var, LabEle *value) {
-    cout << "insert_key_value" << endl;
     auto keyEle = dynamic_cast<Lab_variable *>(var);
     string key = keyEle->value;
     var_value.insert(std::pair<std::string, LabEle *>(key, value));
@@ -54,7 +53,7 @@ bool Frame::is_key_exist(LabEle *var) {
     if (theFind != var_value.end()) {
         return true;
     } else {
-        std::cout << "没有找到变量" << key << std::endl;
+        //std::cout << "没有找到变量" << key << std::endl;
         return false;
     }
 };

@@ -14,7 +14,9 @@ public:
     bool value = false;
     LabEle *container;
 
-    Lab_undefined() {};
+    Lab_undefined() {
+        type = LabTypes::undefined_type;
+    };
 
     ~Lab_undefined() {};
 

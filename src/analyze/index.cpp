@@ -39,11 +39,9 @@ namespace macroFn {
 
     LabEle *findCondition(LabEle *params, LabEle *conditions) {
         if (conditions->type != LabTypes::undefined_type) {
-
             LabEle *this_conditon = conditions->listV()->car();
             LabEle *rest_condition = conditions->listV()->cdr();
             LabEle *var_args = this_conditon->listV()->car()->listV()->cdr();
-
             if (macroFn::paramsArgsMatch(var_args, params)) {
                 return this_conditon;
             } else {
@@ -51,6 +49,7 @@ namespace macroFn {
             }
         } else {
             cout << "没找到" << endl;
+            cout << params->stringify() << endl;
             auto result = LabEleTool::createLabEle();
             return result;
         }
@@ -60,7 +59,7 @@ namespace macroFn {
         if (var_args->type == LabTypes::list_type && params->type == LabTypes::list_type) {
             LabEle *_temp = var_args->listV()->last_items();
 
-            if (_temp->type != LabTypes::list_type && _temp->variableV()->value.substr(0, 3) == "...") {
+            if (_temp->type == LabTypes::variable_type && _temp->variableV()->value.substr(0, 3) == "...") {
                 auto length = params->listV()->length();
                 if (length >= var_args->listV()->length() - 1) {
                     return length > 1 ? (macroFn::paramsArgsMatch(var_args->listV()->car(), params->listV()->car()) &&
@@ -80,10 +79,9 @@ namespace macroFn {
                     return false;
                 }
             }
-        } else if (var_args->type != LabTypes::list_type && var_args->value.substr(0, 3) == "...") {
+        } else if (var_args->type == LabTypes::variable_type && var_args->variableV()->value.substr(0, 3) == "...") {
             return true;
         } else {
-
             return params->type != LabTypes::undefined_type;
         }
     }
@@ -133,7 +131,7 @@ namespace macroFn {
         } else {
 
             if (vars->listV()->car()->type == LabTypes::list_type) {
-                //cout << "---hhhhhhhh————————" << word->value() << endl;
+                //cout << "---hhhhhhhh————————" << word->variableV()->value() << endl;
                 pair<string, LabEle *> temp = macroFn::loopWord(word, vars->listV()->car(), params->listV()->car());
 
                 if (temp.first == "no_find") {
@@ -142,12 +140,12 @@ namespace macroFn {
                     return temp;
                 }
             } else {
-                //cout << "---xxxxxxxx———————" << word->value() << endl;
-                if (word->value == vars->listV()->car()->value) {
+                //cout << "---xxxxxxxx———————" << word->variableV()->value() << endl;
+                if (word->variableV()->value == vars->listV()->car()->variableV()->value) {
 
-                    //cout << "---找到了————————" << word->value() << endl;
+                    //cout << "---找到了————————" << word->variableV()->value() << endl;
 
-                    if (word->value.substr(0, 3) == "...") {
+                    if (word->variableV()->value.substr(0, 3) == "...") {
 
                         if (params->type == LabTypes::list_type) {
                             return pair<string, LabEle *>("...", params);
@@ -202,8 +200,9 @@ namespace macroFn {
         } else {
             LabEle *oneTemplate = conditon->listV()->cdr()->listV()->car();
             LabEle *vars = conditon->listV()->car()->listV()->cdr();
-            LabEle *result = macroFn::replace(vars, oneTemplate, params);
 
+
+            LabEle *result = macroFn::replace(vars, oneTemplate, params);
             return result;
         }
     }
@@ -220,7 +219,6 @@ namespace eval {
             if (fun->funType == funType::original) {
                 return fun->original_fn(operands);
             } else {
-
                 LabCallback &function_body = fun->ananlyzed_body;
                 vector<LabEle *> &function_args = fun->args;
                 Frame *newEnv = new Frame(function_args, operands);
@@ -235,7 +233,6 @@ namespace eval {
                 return function_body(newEnv);
             }
         } else if (operate->type == LabTypes::class_type) {
-            cout << " LabTypes::class_type--------" << endl;
             vector<LabEle *> class_args = operate->classV()->args;
             vector<LabEle *> class_params = operands;
 
@@ -302,6 +299,15 @@ namespace analyze {
     }
 
     //  分割线------
+    LabCallback undefined(LabEle &ele) {
+        //std::cout << "分析number" << std::endl;
+        auto undefined = LabEleTool::createLabEle();
+        return [undefined](Frame *env) -> LabEle * {
+            // cout << ele.numberV()->value << endl;
+            return undefined;
+        };
+    }
+
     LabCallback number(LabEle &ele) {
         //std::cout << "分析number" << std::endl;
         auto new_number = LabEleTool::createLabEle(to_string(ele.numberV()->value));
@@ -690,7 +696,6 @@ namespace analyze {
                     return explainObj_entry(*macroReusult)(env);
                 };
             } else {
-
                 LabCallback operate = explainObj_entry(*temp);
                 std::vector<LabCallback> operands_callbacks;
                 LabEle *operands = ele.listV()->cdr();
@@ -719,7 +724,6 @@ namespace analyze {
                         LabEle *result = eval::eval_app(true_operate, true_operands);
                         return result;
                     } else {
-
                         cout << "app_type错误" << true_operate->type << endl;
                         ele.show();
                     };
@@ -733,7 +737,6 @@ namespace analyze {
 };
 
 LabCallback explainObj_entry(LabEle &parsed_code) {
-    std::cout << "explainObj_entry::-------" << parsed_code.type << std::endl;
     if (parsed_code.type == LabTypes::list_type) {
         LabEle *checkType_LabEle = parsed_code.listV()->car();
         if (checkType_LabEle->type == LabTypes::keyword_type) {
@@ -791,7 +794,7 @@ LabCallback explainObj_entry(LabEle &parsed_code) {
     } else {
         switch (parsed_code.type) {
             case LabTypes::undefined_type:
-                return analyze::number(parsed_code);
+                return analyze::undefined(parsed_code);
                 break;
             case LabTypes::number_type:
                 return analyze::number(parsed_code);
@@ -805,9 +808,9 @@ LabCallback explainObj_entry(LabEle &parsed_code) {
             case LabTypes::variable_type:
                 return analyze::variable(parsed_code);
                 break;
-            case LabTypes::list_type:
-                return analyze::app(parsed_code);
-                break;
+//            case LabTypes::list_type:
+//                return analyze::app(parsed_code);
+//                break;
             default:
                 cout << "--?---" << endl;
                 parsed_code.show();

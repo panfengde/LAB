@@ -39,7 +39,6 @@ Lab_list::Lab_list(vector<LabEle *> LabEles) {
 
 LabEle *Lab_list::car() {
     //return eles[0];
-    cout << "------" << endl;
     return eles.front();
 };
 
@@ -53,7 +52,7 @@ LabEle *Lab_list::cdr() {
         vector<LabEle *>::const_iterator end = eles.end();
         vector<LabEle *> _cdr(first, end);
         auto result = LabEleTool::createLabEle(_cdr);
-
+        //cout << "cdr----" << result->stringify() << endl;
         return result;
     };
 };

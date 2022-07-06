@@ -12,24 +12,33 @@ class Lab_boolean : public LabEle {
 private:
     /* data */
 public:
-    LabTypes::LabTypes type = LabTypes::boolean_type;
     bool value;
     LabEle *container;
 
-    Lab_boolean(bool v) : value(v) {};
+    Lab_boolean(bool v) : value(v) {
+        type = LabTypes::boolean_type;
+    };
 
     template<typename T>
     Lab_boolean(T v);
 
     ~Lab_boolean();
 
+    string stringify();
+
     void show() {
         std::cout << (value ? "true" : "false") << std::endl;
     }
 };
 
+string Lab_boolean::stringify() {
+    return value ? "true" : "false";
+};
+
+
 template<typename T>
 Lab_boolean::Lab_boolean(T oring) {
+    type = LabTypes::boolean_type;
     if (oring == "" || oring == "0" || oring == "false") {
         value = false;
     } else {

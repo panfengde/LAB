@@ -15,7 +15,6 @@ Lab_json::Lab_json(vector<LabEle *> consLists) {
     type = LabTypes::json_type;
     for (LabEle *oneCons: consLists) {
         string key = oneCons->consV()->key_value.first->stringV()->value;
-        std::cout << "---key---" << key << std::endl;
         key_value.insert(std::pair<std::string, LabEle *>(key, oneCons->consV()->key_value.second));
     };
 };
