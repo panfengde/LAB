@@ -18,6 +18,7 @@ namespace LabTypes
         variable_type,
         keyword_type,
         frame_type,
+        insertType
     };
 
 };

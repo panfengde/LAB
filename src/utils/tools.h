@@ -12,45 +12,37 @@
 #include "../types/Lab_list.h"
 #include "../parseCode/codeStruct.h"
 
-namespace tools
-{
+namespace tools {
 
-    bool isNumber(const string &str)
-    { //判断字符串是否为数字
+    bool isNumber(const string &str) { //判断字符串是否为数字
         istringstream sin(str);
         double test;
         return sin >> test && sin.eof();
     }
-    bool isString(const string &str)
-    { //判断字符串是否为数字
 
-        if (str[0] == '\"')
-        {
+    bool isString(const string &str) { //判断字符串是否为数字
+
+        if (str[0] == '\"') {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
-    bool isBool(const string &str)
-    {
-        if (str == "true" || str == "false")
-        {
+
+    bool isBool(const string &str) {
+        if (str == "true" || str == "false") {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
-    bool isUndefined(const string &str)
-    {
+
+    bool isUndefined(const string &str) {
         // todo
         return false;
     }
-    std::pair<bool, keywordType::keywordType> iskeyWord(const string &str)
-    {
+
+    std::pair<bool, keywordType::keywordType> iskeyWord(const string &str) {
         map<std::string, keywordType::keywordType> keyWords;
         keyWords["define"] = keywordType::define;
         keyWords["quote"] = keywordType::quote;
@@ -69,68 +61,51 @@ namespace tools
         keyWords["Json"] = keywordType::json;
         keyWords["sleep"] = keywordType::sleep;
         auto iter = keyWords.find(str);
-        if (iter != keyWords.end())
-        {
+        if (iter != keyWords.end()) {
             keywordType::keywordType type = iter->second;
             return std::pair<bool, keywordType::keywordType>{true, type};
-        }
-        else
-        {
+        } else {
             return std::pair<bool, keywordType::keywordType>{false, keywordType::define};
         }
     }
 
-    bool is_list(CodeUnit *ele)
-    {
-        if (ele->type == codeType::exp)
-        {
+    bool is_list(CodeUnit *ele) {
+        if (ele->type == codeType::exp) {
             return true;
-        }
-        else
-        {
-            return false;
-        };
-    };
-    bool is_list(LabEle &ele)
-    {
-        if (ele.type == LabTypes::list_type)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        };
-    };
-    bool is_cdr_list(LabEle &ele)
-    {
-        if (ele.type == LabTypes::list_type)
-        {
-            auto length = ele.listV->eles.size();
-            if (length > 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            };
-        }
-        else
-        {
+        } else {
             return false;
         };
     };
 
-    bool is_car_list(LabEle &ele)
-    {
-        if (ele.type == LabTypes::list_type)
-        {
-            Lab_Ptr _car = ele.listV->car();
+    bool is_list(LabEle &ele) {
+        if (ele.type == LabTypes::list_type) {
+            return true;
+        } else {
+            return false;
+        };
+    };
+
+    bool is_cdr_list(Lab_Ptr ele) {
+        if (ele->type == LabTypes::list_type) {
+            auto Ele = (Lab_list *) ele;
+
+            auto length = Ele->eles.size();
+            if (length > 1) {
+                return true;
+            } else {
+                return false;
+            };
+        } else {
+            return false;
+        };
+    };
+
+    bool is_car_list(Lab_Ptr ele) {
+        if (ele->type == LabTypes::list_type) {
+            auto Ele = (Lab_list *) ele;
+            Lab_Ptr _car = Ele->car();
             return tools::is_list(*_car);
-        }
-        else
-        {
+        } else {
             return false;
         };
     };

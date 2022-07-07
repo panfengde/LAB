@@ -3,28 +3,52 @@
 
 #include <regex>
 #include <sstream>
-#include <memory>
+//#include <memory>
 
-#include "../LabTypes.h"
+//#include "../LabTypes.h"
 #include "../typeGlobal.h"
-#include "./Lab_undefined.h"
-#include "./Lab_number.h"
-#include "./Lab_string.h"
-#include "./Lab_boolean.h"
-#include "./Lab_keyWord.h"
-#include "./Lab_variable.h"
-#include "./Lab_class.h"
-#include "./Lab_function.h"
-#include "./Lab_list.h"
-#include "./Lab_json.h"
-#include "./Lab_cons.h"
+//#include "./Lab_undefined.h"
+//#include "./Lab_number.h"
+//#include "./Lab_string.h"
+//#include "./Lab_boolean.h"
+//#include "./Lab_keyWord.h"
+//#include "./Lab_variable.h"
+//#include "./Lab_class.h"
+//#include "./Lab_function.h"
+//#include "./Lab_list.h"
+//#include "./Lab_json.h"
+//#include "./Lab_cons.h"
 
 using namespace std;
 
+//
+class Lab_undefined;
+
+class Lab_number;
+
+class Lab_boolean;
+
+class Lab_insertType;
+
+class Lab_string;
+
+class Lab_cons;
+
 class Lab_list;
 
-class CodeUnit;
+class Lab_json;
 
+class Lab_variable;
+
+class Lab_class;
+
+class Lab_function;
+
+class Lab_keyWord;
+
+//
+//class CodeUnit;
+//
 class Frame;
 
 bool isNumber(const std::string &str) { //判断字符串是否为数字
@@ -36,60 +60,50 @@ bool isNumber(const std::string &str) { //判断字符串是否为数字
 class LabEle {
 public:
     LabTypes::LabTypes type = LabTypes::undefined_type;
-    shared_ptr<Lab_undefined> undefinedV;
-    shared_ptr<Lab_number> numberV;
-    shared_ptr<Lab_string> stringV;
-    shared_ptr<Lab_boolean> booleanV;
-    shared_ptr<Lab_class> classV;
-    shared_ptr<Lab_function> functionV;
-    shared_ptr<Lab_list> listV;
-    shared_ptr<Lab_keyWord> keyWordV;
-    shared_ptr<Lab_variable> variableV;
-    shared_ptr<Lab_cons> consV;
-    shared_ptr<Lab_json> jsonV;
-    shared_ptr<Frame> frameV;
+    std::string value = "undefined";
 
-    LabEle() : type(LabTypes::undefined_type) {
-        undefinedV = make_shared<Lab_undefined>();
-        undefinedV->container = this;
+    // 存储那些可以在LAB中使用的方法和属性---
+    Frame *property;
+
+    virtual LabEle *get(LabEle *attr);
+
+    LabEle();
+
+    Lab_undefined *undefinedV();
+
+    Lab_number *numberV();
+
+    Lab_insertType *insertTypeV();
+
+    Lab_boolean *booleanV();
+
+    Lab_string *stringV();
+
+    Lab_cons *consV();
+
+    Lab_list *listV();
+
+    Lab_json *jsonV();
+
+    Lab_class *classV();
+
+    Lab_variable *variableV();
+
+    Lab_function *functionV();
+
+    Lab_keyWord *keyWordV();
+
+    Frame *frameV();
+
+    void show() {
+
     };
 
-    LabEle(std::string valueString);
+    virtual string stringify();
 
-    LabEle(bool boolV);
+    LabEle *set(LabEle *);
 
-    //LabEle(std::vector<string> &strings);
-    LabEle(originalFn);
-
-    LabEle(shared_ptr<Frame>);
-
-    LabEle(pair<shared_ptr<LabEle>, shared_ptr<LabEle>>);
-
-    LabEle(string, vector<Lab_Ptr>); //json
-    LabEle(vector<shared_ptr<LabEle>>);
-
-    LabEle(vector<shared_ptr<LabEle>>, LabCallback, shared_ptr<Frame>);                    // 函数
-    LabEle(shared_ptr<Frame>, shared_ptr<Frame>, vector<shared_ptr<LabEle>>, LabCallback); //_class
-    LabEle(macroCallBack);
-
-    LabEle(CodeUnit oneCode);
-
-    void clone(LabEle &);
-
-    Lab_Ptr &get(Lab_Ptr &);
-
-    // bindQuote是 set方法赋值用的，感觉不需要
-    void bindQuote(Lab_Ptr &);
-
-    void reset();
-
-    void show();
-
-    string value();
-
-    string stringify();
-
-    ~LabEle();
+    // ~LabEle();
 };
 
 #endif

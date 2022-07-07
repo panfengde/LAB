@@ -12,8 +12,9 @@
 #include "../types/Lab_class.h"
 //typedef std::function<LabEle(std::vector<LabEle>)> function_define;
 
-Lab_class::Lab_class(shared_ptr<Frame> def_env, shared_ptr<Frame> p_env, vector<shared_ptr<LabEle>> define_args, LabCallback define_body)
+Lab_class::Lab_class(Frame *def_env, Frame *p_env, vector<LabEle *> define_args, LabCallback define_body)
 {
+    type = LabTypes::class_type;
     args = define_args;
     analyze_constructor = define_body;
     define_env = def_env;

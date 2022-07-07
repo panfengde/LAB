@@ -51,7 +51,7 @@ vector<Task> TaskList::getTask()
     return prepareTasks;
 };
 
-void TaskList::insertTask(LabCallback body, shared_ptr<Frame> env, int waitTime)
+void TaskList::insertTask(LabCallback body, Frame *env, int waitTime)
 {
     Task tempTaks;
     tempTaks.body = body;

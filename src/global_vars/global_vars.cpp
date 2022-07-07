@@ -1,79 +1,69 @@
-#include "../types/LabEle.h"
+#include "../types/Lab_string.h"
 #include "../frame/frame.h"
 #include <memory>
 
-auto number_prototype = make_shared<Frame>();
-auto base_prototype = make_shared<Frame>();
-auto global_env = make_shared<Frame>();
-void base_init()
-{
-    LabEle addName = *(make_shared<LabEle>(string("go")));
+auto number_prototype = new Frame();
+auto base_prototype = new Frame();
+auto global_env = new Frame();
+
+void base_init() {
+    auto addName = LabEleTool::createLabEle(string("go"));
     // string addName = "temp";
-    Lab_Ptr value = make_shared<LabEle>(string("111"));
+    LabEle *value = LabEleTool::createLabEle(string("111"));
     base_prototype->insert_key_value(addName, value);
 };
 
-void number_init()
-{
+void number_init() {
     number_prototype->extend_env(base_prototype);
-    LabEle addName = *(make_shared<LabEle>(string("temp")));
-    Lab_Ptr value = make_shared<LabEle>(string("10000"));
+    LabEle *addName = LabEleTool::createLabEle(string("temp"));
+    LabEle *value = LabEleTool::createLabEle(string("10000"));
     number_prototype->insert_key_value(addName, value);
 };
 
-void global_env_init()
-{
-    auto macro_env = make_shared<Frame>();
+void global_env_init() {
+    auto macro_env = new Frame();
     global_env->extend_env(macro_env);
-    originalFn add_define = [](vector<Lab_Ptr> params) -> Lab_Ptr
-    {
-        Lab_Ptr result = make_shared<LabEle>(string("0"));
-        for (Lab_Ptr &param : params)
-        {
-            result->numberV->value += param->numberV->value;
+    originalFn add_define = [](vector<LabEle *> params) -> LabEle * {
+        LabEle *result = LabEleTool::createLabEle(string("0"));
+        for (LabEle *&param: params) {
+            result->numberV()->value += param->numberV()->value;
         };
         return result;
     };
-    Lab_Ptr add_fun = make_shared<LabEle>(add_define);
-    LabEle addName = *(make_shared<LabEle>(string("+")));
+    LabEle *add_fun = LabEleTool::createLabEle(add_define);
+    auto addName = (LabEleTool::createLabEle(string("+")));
     global_env->insert_key_value(addName, add_fun);
 
-    originalFn subtract_define = [](vector<Lab_Ptr> params) -> Lab_Ptr
-    {
-        Lab_Ptr result = make_shared<LabEle>(to_string(params[0]->numberV->value));
-        for (int i = 1; i < params.size(); i++)
-        {
-            result->numberV->value -= params[i]->numberV->value;
+    originalFn subtract_define = [](vector<LabEle *> params) -> LabEle * {
+        LabEle *result = LabEleTool::createLabEle(to_string(params[0]->numberV()->value));
+        for (int i = 1; i < params.size(); i++) {
+            result->numberV()->value -= params[i]->numberV()->value;
         }
         return result;
     };
-    Lab_Ptr subtract_fun = make_shared<LabEle>(subtract_define);
-    LabEle subtract_name = *(make_shared<LabEle>(string("-")));
+    LabEle *subtract_fun = LabEleTool::createLabEle(subtract_define);
+    auto subtract_name = (LabEleTool::createLabEle(string("-")));
     global_env->insert_key_value(subtract_name, subtract_fun);
 
-    originalFn equal = [](vector<Lab_Ptr> params) -> Lab_Ptr
-    {
-        // Lab_Ptr result = make_shared<LabEle>(true);
-        Lab_Ptr origin = params[0];
+    originalFn equal = [](vector<LabEle *> params) -> LabEle * {
+        // LabEle* result = LabEleTool::createLabEle(true);
+        LabEle *origin = params[0];
         bool result_temp = true;
-        for (Lab_Ptr &param : params)
-        {
-            result_temp = origin->type == param->type && origin->value() == param->value();
-            if (!result_temp)
-            {
+        for (LabEle *param: params) {
+            result_temp = origin->type == param->type && origin->numberV()->value == param->numberV()->value;
+            if (!result_temp) {
                 break;
             }
         };
-        Lab_Ptr result = make_shared<LabEle>(result_temp);
+        LabEle *result = LabEleTool::createLabEle(result_temp);
         return result;
     };
-    Lab_Ptr equal_fun = make_shared<LabEle>(equal);
-    LabEle equal_name = *(make_shared<LabEle>(string("=")));
+    LabEle *equal_fun = LabEleTool::createLabEle(equal);
+    auto equal_name = (LabEleTool::createLabEle(string("=")));
     global_env->insert_key_value(equal_name, equal_fun);
 }
 
-void init()
-{
+void init() {
     base_init();
     number_init();
     global_env_init();

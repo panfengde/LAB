@@ -12,18 +12,21 @@
 #include "../types/Lab_function.h"
 //typedef std::function<LabEle(std::vector<LabEle>)> function_define;
 
-Lab_function::Lab_function(){
-
+Lab_function::Lab_function() {
+    type = LabTypes::function_type;
+    value = "[lambda native code]";
 };
 
-Lab_function::Lab_function(originalFn callBack)
-{
+Lab_function::Lab_function(originalFn callBack) {
+    type = LabTypes::function_type;
+    value = "[lambda native code]";
     funType = funType::original;
     original_fn = callBack;
 };
 
-Lab_function::Lab_function(vector<shared_ptr<LabEle>> define_args, LabCallback define_body, shared_ptr<Frame> env)
-{
+Lab_function::Lab_function(vector<LabEle *> define_args, LabCallback define_body, Frame *env) {
+    type = LabTypes::function_type;
+    value = "[lambda native code]";
     funType = funType::compound;
     args = define_args;
     ananlyzed_body = define_body;
@@ -31,13 +34,14 @@ Lab_function::Lab_function(vector<shared_ptr<LabEle>> define_args, LabCallback d
     _this = env;
 };
 
-Lab_function::Lab_function(macroCallBack callback)
-{
+Lab_function::Lab_function(macroCallBack callback) {
+    type = LabTypes::function_type;
+    value = "[lambda native code]";
     funType = funType::macro;
     macroCallBackBody = callback;
 };
 
-Lab_function::~Lab_function(){
+Lab_function::~Lab_function() {
     //std::cout << "~~~~~~~~~~~~~~~~~~Lab_function" << std::endl;
 };
 

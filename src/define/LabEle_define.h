@@ -1,3 +1,4 @@
+/*
 #ifndef LABElE_DEFINE
 #define LABElE_DEFINE
 
@@ -22,54 +23,70 @@
 #include "../parseCode/codeStruct.h"
 
 class CodeUnit;
-
 class Frame;
-
 using namespace std;
 
-LabEle::LabEle(CodeUnit CodeVec) {
-    if (CodeVec.type == codeType::exp) {
+LabEle::LabEle(CodeUnit CodeVec)
+{
+    if (CodeVec.type == codeType::exp)
+    {
         this->type = LabTypes::list_type;
         listV = make_shared<Lab_list>(CodeVec.elementList);
         listV->container = this;
         //std::cout << "exp----------------ok" << std::endl;
-    } else {
+    }
+    else
+    {
         //std::cout<<"one----"<<std::endl;
-        new(this) LabEle(*(CodeVec.element));
+        new (this) LabEle(*(CodeVec.element));
     }
 };
 
-LabEle::LabEle(vector<shared_ptr<LabEle>> oneLabEle) {
+LabEle::LabEle(vector<shared_ptr<LabEle>> oneLabEle)
+{
     type = LabTypes::list_type;
     listV = make_shared<Lab_list>(oneLabEle);
     listV->container = this;
 };
 
-LabEle::LabEle(std::string valueString) {
-    if (isNumber(valueString)) {
+LabEle::LabEle(std::string valueString)
+{
+    if (isNumber(valueString))
+    {
         numberV = make_shared<Lab_number>(valueString);
         numberV->container = this;
         type = LabTypes::number_type;
-    } else if (valueString[0] == '\"') {
+    }
+    else if (valueString[0] == '\"')
+    {
         string stringValue = valueString.substr(1, valueString.length() - 2);
         stringV = make_shared<Lab_string>(stringValue);
         stringV->container = this;
         type = LabTypes::string_type;
-    } else if (valueString == "false") {
+    }
+    else if (valueString == "false")
+    {
         booleanV = make_shared<Lab_boolean>(false);
         booleanV->container = this;
         type = LabTypes::boolean_type;
-    } else if (valueString == "true" || valueString == "else") {
+    }
+    else if (valueString == "true" || valueString == "else")
+    {
         booleanV = make_shared<Lab_boolean>(true);
         booleanV->container = this;
         type = LabTypes::boolean_type;
-    } else {
+    }
+    else
+    {
         std::pair<bool, keywordType::keywordType> keyWord = tools::iskeyWord(valueString);
-        if (keyWord.first) {
+        if (keyWord.first)
+        {
             keyWordV = make_shared<Lab_keyWord>(valueString, keyWord.second);
             keyWordV->container = this;
             type = LabTypes::keyword_type;
-        } else {
+        }
+        else
+        {
             //保留
             //variableV = new Lab_variable(valueString);
             //std::cout << "variableV---variableV--------" << std::endl;
@@ -81,59 +98,67 @@ LabEle::LabEle(std::string valueString) {
     }
 };
 
-LabEle::LabEle(bool boolv) {
+LabEle::LabEle(bool boolv)
+{
     booleanV = make_shared<Lab_boolean>(boolv);
     booleanV->container = this;
     type = LabTypes::boolean_type;
 }
-
-LabEle::LabEle(originalFn c) {
+LabEle::LabEle(originalFn c)
+{
     type = LabTypes::function_type;
     functionV = make_shared<Lab_function>(c);
     functionV->container = this;
 };
 
-LabEle::LabEle(std::pair<shared_ptr<LabEle>, shared_ptr<LabEle>> thePair) {
+LabEle::LabEle(std::pair<shared_ptr<LabEle>, shared_ptr<LabEle>> thePair)
+{
     consV = make_shared<Lab_cons>(thePair.first, thePair.second);
     consV->container = this;
     type = LabTypes::cons_type;
 };
 
 //json
-LabEle::LabEle(string _, vector<Lab_Ptr> theCons) {
+LabEle::LabEle(string _, vector<Lab_Ptr> theCons)
+{
     jsonV = make_shared<Lab_json>(theCons);
     jsonV->container = this;
     type = LabTypes::json_type;
 };
 
-LabEle::LabEle(vector<shared_ptr<LabEle>> a, LabCallback c, shared_ptr<Frame> e) {
+LabEle::LabEle(vector<shared_ptr<LabEle>> a, LabCallback c, shared_ptr<Frame> e)
+{
     type = LabTypes::function_type;
     functionV = make_shared<Lab_function>(a, c, e);
     functionV->container = this;
 };
 
-LabEle::LabEle(shared_ptr<Frame> c_env, shared_ptr<Frame> m_env, vector<shared_ptr<LabEle>> args, LabCallback fn) {
+LabEle::LabEle(shared_ptr<Frame> c_env, shared_ptr<Frame> m_env, vector<shared_ptr<LabEle>> args, LabCallback fn)
+{
     type = LabTypes::class_type;
     classV = make_shared<Lab_class>(c_env, m_env, args, fn);
     classV->container = this;
 };
 
-LabEle::LabEle(macroCallBack callback) {
+LabEle::LabEle(macroCallBack callback)
+{
     type = LabTypes::function_type;
     functionV = make_shared<Lab_function>(callback);
     functionV->container = this;
 };
 
-LabEle::LabEle(shared_ptr<Frame> f) {
+LabEle::LabEle(shared_ptr<Frame> f)
+{
     type = LabTypes::frame_type;
     frameV = f;
     //classV->container = this;
 };
-
 //LabEle::LabEle(function_define callbAck){}
-Lab_Ptr &LabEle::get(Lab_Ptr &key) {
+Lab_Ptr &LabEle::get(Lab_Ptr &key)
+{
     auto result = make_shared<LabEle>();
-    switch (this->type) {
+    switch (this->type)
+    {
         case LabTypes::number_type:
             return (this->numberV->get(key));
             break;
@@ -176,8 +201,10 @@ Lab_Ptr &LabEle::get(Lab_Ptr &key) {
     };
 }
 
-void LabEle::clone(LabEle &value) {
-    switch (value.type) {
+void LabEle::clone(LabEle &value)
+{
+    switch (value.type)
+    {
         case LabTypes::number_type:
             type = LabTypes::number_type;
             numberV->container = this;
@@ -231,17 +258,20 @@ void LabEle::clone(LabEle &value) {
             break;
     };
 }
-
+*/
 /**
  * 引用绑定
- **/
-void LabEle::bindQuote(Lab_Ptr &value) {
+ **//*
+
+void LabEle::bindQuote(Lab_Ptr &value)
+{
 
     this->reset();
 
     //cout << type << ":" << numberV->value << "|" << value->type << value->numberV->value << endl;
     //cout << value->numberV->value << endl;
-    switch (value->type) {
+    switch (value->type)
+    {
         case LabTypes::number_type:
 
             type = LabTypes::number_type;
@@ -297,9 +327,11 @@ void LabEle::bindQuote(Lab_Ptr &value) {
     };
 }
 
-void LabEle::reset() {
+void LabEle::reset()
+{
 
-    switch (this->type) {
+    switch (this->type)
+    {
         case LabTypes::number_type:
             numberV->~Lab_number();
             break;
@@ -344,9 +376,11 @@ void LabEle::reset() {
     // undefinedV->container = this;
 }
 
-void LabEle::show() {
+void LabEle::show()
+{
 
-    switch (this->type) {
+    switch (this->type)
+    {
         case LabTypes::number_type:
             numberV->show();
             break;
@@ -392,8 +426,10 @@ void LabEle::show() {
     // undefinedV->container = this;
 }
 
-string LabEle::value() {
-    switch (this->type) {
+string LabEle::value()
+{
+    switch (this->type)
+    {
         case LabTypes::number_type:
             return to_string(numberV->value);
             break;
@@ -433,8 +469,10 @@ string LabEle::value() {
     };
 }
 
-string LabEle::stringify() {
-    switch (this->type) {
+string LabEle::stringify()
+{
+    switch (this->type)
+    {
         case LabTypes::list_type:
             return listV->stringify();
             break;
@@ -447,7 +485,7 @@ string LabEle::stringify() {
     };
 }
 
-LabEle::~LabEle() {
+LabEle::~LabEle()
+{
 }
-
-#endif
+#endif*/
