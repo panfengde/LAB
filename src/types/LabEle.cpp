@@ -58,7 +58,6 @@ LabEle *LabEle::get(LabEle *key) {
     };
 }
 
-
 LabEle::LabEle() {
 };
 

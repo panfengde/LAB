@@ -12,11 +12,10 @@
 LabEle *Test() {
     auto InsetObj = new Lab_insertType();
     InsetObj->property = new Frame();
-
-    originalFn testMethod = [](vector<LabEle *> params) -> LabEle * {
-        LabEle *result = LabEleTool::createLabEle("hello 插件");
-        cout << "test___" << params[0]->stringV()->value << endl;
-        return result;
+    originalFn testMethod = [InsetObj](vector<LabEle *> params) -> LabEle * {
+        LabEle *result = LabEleTool::createLabEle("hello xx");
+        cout << "test___" << params[0]->stringV()->value << InsetObj->type << endl;
+        return InsetObj;
     };
     LabEle *testMethod_lab = LabEleTool::createLabEle(testMethod);
     map<string, LabEle *> name_Methods;

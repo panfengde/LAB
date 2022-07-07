@@ -51,7 +51,7 @@ Lab_Ptr labEntry(string strCode) {
     startTime = clock(); //计时开始
 
     shared_ptr<CodeUnit> oneExp = codeTxt_to_list(strCode);
-    // oneExp->show();
+    oneExp->show();
     auto go = LabEleTool::createLabEle(oneExp);
     // go->show();
     endTime = clock(); //计时结束

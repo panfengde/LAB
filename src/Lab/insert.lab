@@ -1,1 +1,4 @@
-((get TestClass "test") "hello")
+(
+    (get ((get TestClass "test"  ) "hello")
+            "test")
+                "xxxx")
