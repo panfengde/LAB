@@ -19,6 +19,7 @@
 #include "./define/Lab_json_define.h"
 #include "./define/LabEle_define.h"
 #include "./define/LabEle_function_define.h"
+#include "./define/Lab_insertType.cpp"
 #include "./analyze/index.cpp"
 #include "./frame/frame.h"
 #include "./frame/frame.cpp"
@@ -29,13 +30,21 @@
 #include "./types/LabEle.cpp"
 #include "./types/LabEleTool.cpp"
 
+#include "./insertTypes/Test.h"
+
+
 using namespace std;
 
 //typedef std::function<LabEle(Frame&)> LabCallback;
 Lab_Ptr labEntry(string strCode) {
+    auto test = Test();
 
-    strCode = read("/Users/panfeng/coder/myProject/Lab/src/Lab/class.lab");
-    // strCode = read("/Users/panfeng/coder/myProject/Lab/src/Lab/town.json");
+    global_env->insert_key_value(LabEleTool::createLabEle(string("TestClass")), test);
+
+    strCode = read("/Users/panfeng/coder/myProject/Lab/src/Lab/insert.lab");
+    // strCode = read("/Users/panfeng/coder/myProject/Lab/src/Lab/class.lab");
+    //strCode = read("/Users/panfeng/coder/myProject/Lab/src/Lab/macro.lab");
+    //strCode = read("/Users/panfeng/coder/myProject/Lab/src/Lab/town.json");
     //string strCode = read("./Lab/town.json");
     //strCode = "( begin " + strCode + " )";
     clock_t startTime, endTime;
@@ -44,15 +53,11 @@ Lab_Ptr labEntry(string strCode) {
     shared_ptr<CodeUnit> oneExp = codeTxt_to_list(strCode);
     // oneExp->show();
     auto go = LabEleTool::createLabEle(oneExp);
-
     // go->show();
     endTime = clock(); //计时结束
-
     std::cout << "解析字符串时间: " << (double) (endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
-
     clock_t startTime2, endTime2;
     startTime2 = clock(); //计时开始
-
     std::cout << "开始分析" << std::endl;
     LabCallback call_go = explainObj_entry(*go);
     std::cout << "开始执行" << std::endl;

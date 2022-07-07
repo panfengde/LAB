@@ -31,13 +31,13 @@ using namespace std;
 
 class Lab_string;
 
-class Frame : public LabEle
-{
+class Frame : public LabEle {
 private:
     /* data */
 public:
-    frameType type = frameType::topFrame;
+    frameType areaType = frameType::topFrame;
     classFrameType prototype_type = classFrameType::topPototype;
+    string xxx = "xxxxllll";
     //frameType type = frameType::frame;
     Frame *father_frame;
     Frame *father_prototype; //父级原型链条

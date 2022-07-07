@@ -19,7 +19,6 @@ private:
 
 public:
     // shared_ptr<Frame> number_prototype;
-    Frame* property = number_prototype;
     long value;
     LabEle *container;
     Lab_number(std::string v);

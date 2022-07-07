@@ -387,14 +387,18 @@ namespace analyze {
     }
 
     LabCallback variable(LabEle &ele) {
-
         return [&ele](Frame *env) mutable -> LabEle * {
-
             LabEle *findvar = env->look_variable_env(&ele);
             return findvar;
             /* int a = 100;
             auto _result =  LabEleTool::createLabEle(a);
             return *_result; */
+        };
+    }
+    LabCallback insertType(LabEle &ele) {
+        return [&ele](Frame *env) mutable -> LabEle * {
+            LabEle *findvar = env->look_variable_env(&ele);
+            return findvar;
         };
     }
 
@@ -488,7 +492,7 @@ namespace analyze {
         return [=](Frame *env) mutable -> LabEle * {
             LabEle *trueObj = nameCallback(env);
             LabEle *trueValue = valueCallback(env);
-            trueObj->set(trueValue);
+            trueObj = trueObj->set(trueValue);
             return trueObj;
             //return truevalue;
         };
@@ -807,6 +811,9 @@ LabCallback explainObj_entry(LabEle &parsed_code) {
                 break;
             case LabTypes::variable_type:
                 return analyze::variable(parsed_code);
+                break;
+            case LabTypes::insertType:
+                return analyze::insertType(parsed_code);
                 break;
 //            case LabTypes::list_type:
 //                return analyze::app(parsed_code);

@@ -28,6 +28,8 @@ class Lab_number;
 
 class Lab_boolean;
 
+class Lab_insertType;
+
 class Lab_string;
 
 class Lab_cons;
@@ -65,9 +67,13 @@ public:
 
     virtual LabEle *get(LabEle *attr);
 
+    LabEle();
+
     Lab_undefined *undefinedV();
 
     Lab_number *numberV();
+
+    Lab_insertType *insertTypeV();
 
     Lab_boolean *booleanV();
 

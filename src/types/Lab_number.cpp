@@ -13,12 +13,14 @@ LabEle *Lab_number::get(LabEle *attr) {
 };
 
 Lab_number::Lab_number(std::string v) {
+    property = number_prototype;
     type = LabTypes::number_type;
     //std::cout << "number--" << v << std::endl;
     value = std::stoi(v);
 };
 
 Lab_number::Lab_number(long v) {
+    property = number_prototype;
     type = LabTypes::number_type;
     value = v;
 };

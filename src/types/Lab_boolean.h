@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 class Lab_boolean : public LabEle {
 private:
     /* data */
@@ -34,7 +33,6 @@ public:
 string Lab_boolean::stringify() {
     return value ? "true" : "false";
 };
-
 
 template<typename T>
 Lab_boolean::Lab_boolean(T oring) {

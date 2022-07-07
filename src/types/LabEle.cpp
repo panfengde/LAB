@@ -3,11 +3,63 @@
 //
 #include "LabEle.h"
 
-LabEle *LabEle::get(LabEle *attr) {
-    attr->show();
-    //std::cout << "init---addName2-----------" << std::endl;
-    //base_prototype->look_vars_frame(addName2).show();
-    return property->look_variable_env(attr);
+//LabEle *LabEle::get(LabEle *attr) {
+//    attr->show();
+//    //std::cout << "init---addName2-----------" << std::endl;
+//    //base_prototype->look_vars_frame(addName2).show();
+//    return property->look_variable_env(attr);
+//};
+
+LabEle *LabEle::get(LabEle *key) {
+    auto result = LabEleTool::createLabEle();
+    switch (this->type) {
+        case LabTypes::number_type:
+            return (this->numberV()->get(key));
+            break;
+        case LabTypes::string_type:
+            return (this->stringV()->get(key));
+            break;
+        case LabTypes::boolean_type:
+            return (this->booleanV()->get(key));
+            break;
+        case LabTypes::insertType:
+            return (this->insertTypeV()->get(key));
+            break;
+        case LabTypes::class_type:
+            return (this->listV()->get(key));
+            break;
+        case LabTypes::function_type:
+            return (this->listV()->get(key));
+            break;
+        case LabTypes::list_type:
+            return (this->listV()->get(key));
+            break;
+        case LabTypes::keyword_type:
+            return (this->listV()->get(key));
+            break;
+        case LabTypes::variable_type:
+            return (this->listV()->get(key));
+            break;
+        case LabTypes::undefined_type:
+            return result;
+            break;
+        case LabTypes::frame_type:
+            return (this->frameV()->look_variable_prototype(key));
+            break;
+        case LabTypes::cons_type:
+            return this->consV()->get(key);
+            break;
+        case LabTypes::json_type:
+            return this->jsonV()->get(key);
+            break;
+        default:
+            return result;
+            break;
+    };
+}
+
+
+LabEle::LabEle() {
 };
 
 Lab_undefined *LabEle::undefinedV() {
@@ -21,6 +73,10 @@ Lab_number *LabEle::numberV() {
 
 Lab_boolean *LabEle::booleanV() {
     return reinterpret_cast<Lab_boolean *>(this);
+}
+
+Lab_insertType *LabEle::insertTypeV() {
+    return reinterpret_cast<Lab_insertType *>(this);
 }
 
 Lab_string *LabEle::stringV() {
@@ -62,7 +118,6 @@ Frame *LabEle::frameV() {
 }
 
 LabEle *LabEle::set(LabEle *obj) {
-
     switch (obj->type) {
         case LabTypes::number_type: {
             type = LabTypes::number_type;
@@ -72,6 +127,7 @@ LabEle *LabEle::set(LabEle *obj) {
         case LabTypes::string_type: {
             type = LabTypes::string_type;
             *(stringV()) = *(obj->stringV());
+            return this;
         }
         case LabTypes::boolean_type:
             type = LabTypes::boolean_type;
