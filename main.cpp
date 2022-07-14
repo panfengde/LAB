@@ -4,13 +4,15 @@
 
 #include <string>
 #include <iostream>
-#include "./labEntry.cpp"
+#include "./LabEntry.h"
+#include "./LabEntry.cpp"
 
 using namespace std;
 
+
 int main() {
     // 插入全局变量，方法等
-    init();
+
     /*string strCode = R"(
         (sleep (+ 1 1) 10)
         (sleep (+ 2 2) 100)
@@ -19,13 +21,11 @@ int main() {
         (sleep (+ 4 4) 20)
      )";*/
     string strCode = R"(
-            {
-    a:{
-        x:"hello",
-        y:"hello",
-    },
-    b:"hello",
-}
+           <div>
+               <div>"123"</div>
+               <div>"123"</div>
+               <div>"123"</div>
+            </div>
          )";
     //string strCode = read("./Lab/test.lab");
     //string strCode = read("./Lab/town.json");

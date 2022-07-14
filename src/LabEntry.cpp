@@ -1,47 +1,15 @@
-#include <string>
-#include <vector>
-#include <iostream>
-#include <stdio.h>
-#include <ctime>
-#include <initializer_list>
-#include <memory>
-#include "./LabTypes.h"
-#include "./typeGlobal.h"
-#include "./parseCode/codeStruct.h"
-//#include "./parseCode/parseExp.cpp"
-#include "./parseCode/parseExpNew.cpp"
-
-#include "./types/LabEle.h"
-#include "./types/LabEleTool.h"
-#include "./define/Lab_list_define.h"
-#include "./define/Lab_class_define.h"
-#include "./define/Lab_cons_define.h"
-#include "./define/Lab_json_define.h"
-#include "./define/LabEle_define.h"
-#include "./define/LabEle_function_define.h"
-#include "./define/Lab_insertType.cpp"
-#include "./analyze/index.cpp"
-#include "./frame/frame.h"
-#include "./frame/frame.cpp"
-#include "./readfile/read.h"
-#include "./types/Lab_number.cpp"
-#include "./global_vars/global_vars.cpp"
-#include "./task/task.cpp"
-#include "./types/LabEle.cpp"
-#include "./types/LabEleTool.cpp"
-
-#include "./insertTypes/Test.h"
-
+#include "./LabEntry.h"
 
 using namespace std;
 
 //typedef std::function<LabEle(Frame&)> LabCallback;
 Lab_Ptr labEntry(string strCode) {
+    init();
     auto test = Test();
 
     global_env->insert_key_value(LabEleTool::createLabEle(string("TestClass")), test);
 
-    strCode = read("/Users/panfeng/coder/myProject/Lab/src/Lab/insert.lab");
+    // strCode = read("/Users/panfeng/coder/myProject/Lab/src/Lab/insert.lab");
     // strCode = read("/Users/panfeng/coder/myProject/Lab/src/Lab/class.lab");
     //strCode = read("/Users/panfeng/coder/myProject/Lab/src/Lab/macro.lab");
     //strCode = read("/Users/panfeng/coder/myProject/Lab/src/Lab/town.json");
@@ -52,8 +20,9 @@ Lab_Ptr labEntry(string strCode) {
 
     shared_ptr<CodeUnit> oneExp = codeTxt_to_list(strCode);
     oneExp->show();
+    //return new LabEle();
     auto go = LabEleTool::createLabEle(oneExp);
-    // go->show();
+    go->show();
     endTime = clock(); //计时结束
     std::cout << "解析字符串时间: " << (double) (endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
     clock_t startTime2, endTime2;
@@ -62,6 +31,8 @@ Lab_Ptr labEntry(string strCode) {
     LabCallback call_go = explainObj_entry(*go);
     std::cout << "开始执行" << std::endl;
     LabEle *result = call_go(global_env);
+
+
     std::cout << "执行结果：" << std::endl;
     std::cout << result->stringify() << endl;
     endTime2 = clock(); //计时开始
